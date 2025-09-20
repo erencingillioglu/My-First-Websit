@@ -1,0 +1,1117 @@
+function calculateImpact() {
+            const amount = document.getElementById('textile-amount').value;
+            const type = document.getElementById('textile-type').value.toLowerCase();
+            const cycles = document.getElementById('processing-method').value || 1;
+            const resultDiv = document.getElementById('impact-result');
+            
+            if (!amount || !type) {
+                alert('Lütfen tüm alanları doldurun!');
+                return;
+            }
+
+            let waterSaving, energySaving, co2Reduction, costSaving;
+            const multiplier = parseFloat(cycles);
+            
+            // Tekstil türüne göre hesaplama (kg başına)
+            switch(type) {
+                case 'cotton':
+                    waterSaving = amount * 2700 * multiplier; // L/kg
+                    energySaving = amount * 60 * multiplier; // kWh/kg
+                    co2Reduction = amount * 15 * multiplier; // kg CO2/kg
+                    costSaving = amount * 45 * multiplier; // TL/kg
+                    break;
+                case 'polyester':
+                    waterSaving = amount * 1500 * multiplier;
+                    energySaving = amount * 45 * multiplier;
+                    co2Reduction = amount * 12 * multiplier;
+                    costSaving = amount * 35 * multiplier;
+                    break;
+                case 'wool':
+                    waterSaving = amount * 3500 * multiplier;
+                    energySaving = amount * 75 * multiplier;
+                    co2Reduction = amount * 18 * multiplier;
+                    costSaving = amount * 80 * multiplier;
+                    break;
+                case 'denim':
+                    waterSaving = amount * 3800 * multiplier;
+                    energySaving = amount * 85 * multiplier<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTextile - Sürdürülebilir Tekstil Geleceği</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientWave 15s ease infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        nav a:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            color: #667eea;
+        }
+
+        .menu-toggle {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            min-width: 250px;
+            display: none;
+            animation: slideDown 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 1rem;
+            margin: 0.3rem 0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+
+        main {
+            margin-top: 90px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 6rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(1px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #fff, #f0f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            margin: 3rem 0;
+            padding: 4rem;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .section.active {
+            display: block;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 3rem;
+            font-size: 3rem;
+            text-align: center;
+            position: relative;
+            font-weight: 700;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .visual-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .visual-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+        }
+
+        .visual-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 4rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 45%;
+            margin: 0 2.5rem;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(240, 147, 251, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: #2c3e50;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .idea-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .idea-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .idea-card:hover::before {
+            left: 100%;
+        }
+
+        .idea-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4);
+        }
+
+        .idea-card h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .manufacturing-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .step-card {
+            background: white;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            border-radius: 20px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 15px 30px rgba(44, 62, 80, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .world-map {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.3);
+        }
+
+        .country-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            transition: all 0.4s ease;
+        }
+
+        .country-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(15px);
+        }
+
+        .calculator {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            margin: 2rem 0;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculator input, .calculator select {
+            width: 100%;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .calculator input:focus, .calculator select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .calculator button {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            font-weight: bold;
+        }
+
+        .calculator button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .cost-section {
+            background: linear-gradient(135deg, #f5576c, #f093fb);
+            color: white;
+        }
+
+        .cost-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .cost-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.02);
+        }
+
+        .whatsapp-support {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #25D366;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .whatsapp-support:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+            margin-top: 5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 2rem 1rem;
+                margin: 1rem 0;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: row !important;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">🌿 EcoTextile</a>
+                <nav>
+                    <ul>
+                        <li><a onclick="showSection('home')">Ana Sayfa</a></li>
+                        <li><a onclick="showSection('history')">Tarihçe</a></li>
+                        <li><a onclick="showSection('manufacturing')">İmalat Süreci</a></li>
+                        <li><a onclick="showSection('ideas')">Fikirlerimiz</a></li>
+                        <li><a onclick="showSection('world')">Dünya'da Geri Dönüşüm</a></li>
+                        <li><a onclick="showSection('costs')">Maliyet</a></li>
+                        <li><a onclick="showSection('calculator')">Hesaplayıcı</a></li>
+                    </ul>
+                </nav>
+                <div class="menu-toggle" onclick="toggleDropdown()">⋯</div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a onclick="showSection('home')">🏠 Ana Sayfa</a>
+                    <a onclick="showSection('history')">📜 Tarihçe</a>
+                    <a onclick="showSection('manufacturing')">🏭 İmalat Süreci</a>
+                    <a onclick="showSection('ideas')">💡 Fikirlerimiz</a>
+                    <a onclick="showSection('world')">🌍 Dünya'da Geri Dönüşüm</a>
+                    <a onclick="showSection('costs')">💰 Maliyet Optimizasyonu</a>
+                    <a onclick="showSection('calculator')">🧮 Hesaplayıcı</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Tekstil Geri Dönüşümün Geleceği</h1>
+                    <p>Sürdürülebilir moda için yenilikçi çözümler ve pratik öneriler</p>
+                    
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number">92M</span>
+                            <span>Ton tekstil atığı/yıl</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">%73</span>
+                            <span>Geri dönüştürülemeyen atık</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">2,700L</span>
+                            <span>Su/1 pamuk tişört</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">%20</span>
+                            <span>Dünya su kirliliği</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <section id="home" class="section active">
+                <h2>🌍 Tekstil Geri Dönüşümün Önemi</h2>
+                <p style="font-size: 1.2rem; text-align: center; margin-bottom: 3rem;">
+                    Moda endüstrisi dünyada en çok kirlilik yaratan ikinci sektör. Geri dönüşümle bu durumu değiştirebiliriz!
+                </p>
+
+                <div class="visual-card">
+                    <h3>🔄 Döngüsel Ekonomi Modeli</h3>
+                    <p>Tekstil atıklarını yeni ürünlere dönüştürerek sürdürülebilir bir döngü oluşturabiliriz. Geleneksel "al-kullan-at" modelinden çıkıp, malzemelerin sürekli döngüde kalmasını sağlayan sistemdir. Bu model ile atık miktarını %80'e kadar azaltabiliriz.</p>
+                </div>
+
+                <div class="visual-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <h3>💧 Su Tasarrufu Potansiyeli</h3>
+                    <p>Geri dönüştürülmüş tekstillerle %95'e kadar su tasarrufu mümkün. Yeni pamuk üretimi yerine geri dönüştürülmüş fiber kullanmak, boyama ve işleme süreçlerinde büyük tasarruf sağlar. Bir tişörtün geri dönüştürülmesi 2,500 litre su tasarrufu demektir.</p>
+                </div>
+
+                <div class="visual-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h3>⚡ Enerji Verimliliği</h3>
+                    <p>Geri dönüşüm, yeni üretimden %60 daha az enerji kullanır. Hammadde çıkarma, taşıma ve işleme süreçleri atlanarak önemli enerji tasarrufu elde edilir. Geri dönüştürülmüş polyester, virgin polyester'den %59 daha az enerji tüketir.</p>
+                </div>
+            </section>
+
+            <section id="history" class="section">
+                <h2>📜 Tekstil Geri Dönüşümünün Tarihi</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1800'ler</div>
+                        <div class="timeline-content">
+                            <h3>🧵 İlk Geri Dönüşüm</h3>
+                            <p>Sanayi Devrimi sırasında tekstil atıkları "shoddy" adı verilen düşük kaliteli kumaşlara dönüştürülmeye başlandı. İngiltere'de yün atıkları parçalanıp yeniden iplik haline getiriliyordu. Yorkshire bölgesi bu alanda öncülük etti.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1940'lar</div>
+                        <div class="timeline-content">
+                            <h3>⚔️ Savaş Zamanı Geri Dönüşüm</h3>
+                            <p>II. Dünya Savaşı sırasında hammadde kıtlığı nedeniyle tekstil geri dönüşümü zorunluluk haline geldi. "Make Do and Mend" kampanyası ile eski kıyafetlerin tamiri teşvik edildi. Naylon çoraplar paraşüt yapımında kullanıldı.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1970'ler</div>
+                        <div class="timeline-content">
+                            <h3>🌱 Çevre Bilinci</h3>
+                            <p>Çevre hareketinin güçlenmesiyle tekstil geri dönüşümü çevreci bir yaklaşım olarak benimsenmeye başlandı. İlk profesyonel geri dönüşüm tesisleri kuruldu. Earth Day hareketi ile farkındalık arttı.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1990'lar</div>
+                        <div class="timeline-content">
+                            <h3>🏭 Endüstriyel Gelişim</h3>
+                            <p>Mekanik ve kimyasal geri dönüşüm teknolojileri geliştirildi. Polyester ve diğer sentetik fiberler için özel yöntemler bulundu. Patagonia gibi markalar geri dönüştürülmüş malzemelerden ürün üretmeye başladı.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2000'ler</div>
+                        <div class="timeline-content">
+                            <h3>🌐 Küresel Farkındalık</h3>
+                            <p>Fast fashion'ın çevresel etkisi fark edilmeye başlandı. Büyük markalar sürdürülebilirlik programları başlattı. H&M'in Conscious Collection'ı ve Nike'ın Flyknit teknolojisi öncü oldu.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020'ler</div>
+                        <div class="timeline-content">
+                            <h3>🚀 Teknoloji Devrimi</h3>
+                            <p>AI, robotik ve biyoteknoloji ile geri dönüşüm süreçleri devrim geçirdi. Kapanmış döngü sistemleri (closed-loop) yaygınlaştı. Blockchain ile şeffaflık sağlandı. COVID-19 pandemisi sürdürülebilirlik bilincini artırdı.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="manufacturing" class="section">
+                <h2>🏭 Tekstil İmalat Süreci</h2>
+                
+                <div class="visual-card">
+                    <h3>🌾 Hammadde Aşaması</h3>
+                    <p>Tekstil üretimi doğal (pamuk, yün, ipek) veya sentetik (polyester, naylon) hammaddelerle başlar. Bu aşamada su, toprak ve enerji yoğun süreçler kullanılır. Pamuk üretiminde dünya tarım alanının %2.4'ü kullanılırken, su kaynaklarının %16'sı tüketilir.</p>
+                </div>
+
+                <div class="manufacturing-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>🌱 Lif Üretimi</h3>
+                        <p>Doğal lifler tarım yoluyla, sentetik lifler petrolden elde edilir. Her ton pamuk için 10,000-17,000 litre su gerekir. Polyester üretiminde ise yoğun enerji kullanımı söz konusudur.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>🧵 İplik Dönüşümü</h3>
+                        <p>Lifler temizlenip taranarak iplik haline getirilir. Bu süreç büyük miktarda enerji tüketir. Modern iplik makineleri saatte 50-100 kg iplik üretebilir.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>🪡 Kumaş Dokuma</h3>
+                        <p>İplikler dokuma veya örme makinelerinde kumaş haline getirilir. Modern makineler saatte 2000m kumaş üretebilir. Bu aşamada elektrik tüketimi yüksektir.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>🎨 Boyama ve Baskı</h3>
+                        <p>Kumaşlar boyanır ve desenler basılır. Bu aşama en çok su kirliliği yaratan süreçtir. 1 kg kumaş boyamak için 100-150 litre su kullanılır.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <h3>✂️ Kesim ve Dikim</h3>
+                        <p>Kumaşlar tasarıma göre kesilir ve dikilir. Bu aşamada %15-25 kumaş atığı oluşur. Modern kesim teknolojileri ile atık oranı azaltılabilir.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">6</div>
+                        <h3>📦 Paketleme ve Nakliye</h3>
+                        <p>Ürünler paketlenip mağazalara gönderilir. Kargo ve lojistik süreçlerinde karbon ayak izi oluşur. Ortalama bir tişört 2,000 km yol kat eder.</p>
+                    </div>
+                </div>
+
+                <div class="visual-card" style="background: linear-gradient(135deg, #f5576c, #f093fb);">
+                    <h3>♻️ Geri Dönüşüm Süreçleri</h3>
+                    <p><strong>Mekanik Geri Dönüşüm:</strong> Tekstiller fiziksel olarak parçalanır ve yeni fiber haline getirilir. Bu yöntem daha az kimyasal kullanır ancak fiber kalitesi düşer.</p>
+                    <br>
+                    <p><strong>Kimyasal Geri Dönüşüm:</strong> Polimerik yapı bozulup yeniden kurulur. Daha yüksek kaliteli fiber elde edilir ancak daha fazla enerji gerektirir.</p>
+                </div>
+            </section>
+
+            <section id="ideas" class="section">
+                <h2>💡 Fikirlerimiz: Geri Dönüşümü Nasıl İyileştirebiliriz?</h2>
+                
+                <p style="font-size: 1.1rem; text-align: center; margin-bottom: 3rem; color: #2c3e50;">
+                    Tekstil geri dönüşümünü geliştirmek için yenilikçi ve herkesin anlayabileceği pratik çözümler ürettik:
+                </p>
+                
+                <div class="ideas-grid">
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>🤖 AI Destekli Sınıflandırma</h3>
+                        <p>Yapay zeka ile tekstil türlerini otomatik ayırma sistemi</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Kameralar ve sensörlerle kumaşları tarar, AI hangi tür tekstil olduğunu anında tespit eder. Robotlar otomatik olarak ayırır. Bu sistem %98 doğrulukla çalışır ve insan hatalarını önler. Günde 50 ton tekstili sınıflandırabilir.
+                        </div>
+                    </div>
+                    
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>🧬 Biyo-Teknoloji Çözümleri</h3>
+                        <p>Enzimlerle tekstil liflerini moleküler düzeyde ayırma</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Özel bakterilerden elde edilen enzimler, karışık kumaşları ana bileşenlerine ayırır. Pamuk-polyester karışımından %100 saf pamuk ve polyester elde edilir. Doğal yöntem olduğu için çevreye zarar vermez.
+                        </div>
+                    </div>
+                    
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>📱 Blok Zincir İzlenebilirlik</h3>
+                        <p>Tekstil yaşam döngüsünü şeffaf takip sistemi</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Her ürüne dijital kimlik verilir. QR kod ile tarihçesi görülür: hangi tarladan geldiği, kim üretti, kaç kez geri dönüştürüldü. Tüketiciler bilinçli seçim yapar, markalar hesap verir.
+                        </div>
+                    </div>
+                    
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>🏢 Mikro Geri Dönüşüm Merkezleri</h3>
+                        <p>Mahalle bazında küçük ölçekli işleme ünitleri</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Her mahallede konteyner büyüklüğünde mini tesisler kurulur. Eski kıyafetlerinizi buraya bırakırsınız, 24 saat içinde yeni ürün alırsınız. Taşıma maliyeti sıfır, hızlı işlem garantili.
+                        </div>
+                    </div>
+                    
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>🎨 Yaratıcı Upcycling Ağı</h3>
+                        <p>Tasarımcıları atık tekstillerle eşleştiren platform</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Mobil uygulama ile atık tekstillerinizin fotoğrafını çekersiniz. Platform, bu malzemeyi kullanabilecek tasarımcıları bulur. Tasarımcılar size özel ürün yapar, siz de özgün parça sahip olursunuz.
+                        </div>
+                    </div>
+                    
+                    <div class="idea-card" onclick="expandCard(this)">
+                        <h3>🔬 Nano-Teknoloji Uygulamaları</h3>
+                        <p>Nano boyutunda fiber ayırma ve yenileme</p>
+                        <div style="display:none; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:1.5rem;">
+                            <strong>Nasıl Çalışır:</strong> Nano parçacıklar eskimiş tekstillerin moleküler yapısını yeniler. Solmuş renkler canlanır, yıpranmış lifler güçlenir. Eski tişörtünüz yeni gibi olur, tekrar kullanım süresi 2 kat artar.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="world" class="section">
+                <h2>🌍 Dünya'da Tekstil Geri Dönüşümü</h2>
+                
+                <div class="world-map">
+                    <h3 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">🌐 Küresel Öncüler</h3>
+                    <p style="text-align: center; margin-bottom: 3rem; font-size: 1.1rem;">
+                        Dünyanın farklı ülkelerinde tekstil geri dönüşümü konusunda öncü projeler yürütülüyor. İşte en başarılı örnekler:
+                    </p>
+
+                    <div class="country-card">
+                        <h4>🇸🇪 İsveç - Döngüsel Ekonomi Lideri</h4>
+                        <p><strong>H&M'in Ana Merkezi:</strong> Yılda 20,000 ton tekstil atığını geri dönüştürüyor. "Conscious Collection" serisiyle %100 sürdürülebilir üretim hedefliyor. 2030'a kadar tüm ürünlerin geri dönüştürülebilir olacağını duyurdu.</p>
+                        <p><strong>Başarı Oranı:</strong> %75 tekstil geri dönüşüm oranı</p>
+                    </div>
+
+                    <div class="country-card">
+                        <h4>🇳🇱 Hollanda - Yenilikçi Teknolojiler</h4>
+                        <p><strong>Worn Again Projesi:</strong> Pamuk-polyester karışımını %100 ayırma teknolojisi geliştirdi. Avrupa'nın en büyük tekstil geri dönüşüm tesisini kurdu. Yılda 1 milyon ton kapasiteyle çalışıyor.</p>
+                        <p><strong>Özellik:</strong> Kimyasal geri dönüşümde dünya lideri</p>
+                    </div>
+
+                    <div class="country-card">
+                        <h4>🇯🇵 Japonya - Teknolojik İnovasyon</h4>
+                        <p><strong>Toray Industries:</strong> Plastik şişelerden high-tech spor kıyafetleri üretiyor. Tokyo 2020 Olimpiyatları'nda geri dönüştürülmüş malzemelerden 5 milyon kıyafet üretti.</p>
+                        <p><strong>İnovasyon:</strong> Robot destekli otomatik sınıflandırma</p>
+                    </div>
+
+                    <div class="country-card">
+                        <h4>🇺🇸 ABD - Büyük Ölçekli Projeler</h4>
+                        <p><strong>Patagonia:</strong> "Worn Wear" programıyla kullanıcılardan eski kıyafetleri toplayıp tamir ediyor. Nike'ın "Move to Zero" projesi ile karbon nötr üretim hedefliyor.</p>
+                        <p><strong>Hedef:</strong> 2025'e kadar %50 geri dönüştürülmüş malzeme kullanımı</p>
+                    </div>
+
+                    <div class="country-card">
+                        <h4>🇨🇳 Çin - Üretim Merkezi Dönüşümü</h4>
+                        <p><strong>Dünyanın En Büyük Üreticisi:</strong> Yılda 50 milyon ton tekstil üreten Çin, geri dönüşüm teknolojilerine yoğun yatırım yapıyor. 2025'e kadar 100 yeni geri dönüşüm tesisi kuracak.</p>
+                        <p><strong>Kapasite:</strong> Yılda 15 milyon ton geri dönüşüm kapasitesi</p>
+                    </div>
+
+                    <div class="country-card">
+                        <h4>🇹🇷 Türkiye - Bölgesel Hub</h4>
+                        <p><strong>Tekstil İhracat Merkezi:</strong> Denizli ve Bursa'da kurulu geri dönüşüm tesisleri ile yılda 2 milyon ton kapasiteye ulaştı. Avrupa'dan toplanan tekstil atıklarını işliyor.</p>
+                        <p><strong>Güçlü Yan:</strong> Coğrafi konum avantajı ve deneyimli işgücü</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="costs" class="section cost-section">
+                <h2 style="color: white;">💰 Maliyet Optimizasyonu Stratejileri</h2>
+                
+                <p style="text-align: center; margin-bottom: 3rem; font-size: 1.1rem; opacity: 0.9;">
+                    Tekstil geri dönüşümünde maliyetleri düşürmek ve verimliliği artırmak için uygulanabilir stratejiler:
+                </p>
+                
+                <div class="cost-card">
+                    <h3>💧 Su Kullanımını Azaltma Yöntemleri</h3>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Kapalı Döngü Sistemleri:</strong> Suyun tekrar tekrar kullanılması (%80 tasarruf) - 1 milyon litre/gün tasarruf</li>
+                        <li><strong>Süperkritik CO₂ Boyama:</strong> Su kullanmadan boyama teknolojisi - %100 su tasarrufu</li>
+                        <li><strong>Ozon Yıkama:</strong> Daha az su ile daha etkili temizleme - %50 su tasarrufu</li>
+                        <li><strong>Air-Dye Teknolojisi:</strong> Havasız ortamda boyama sistemi - %75 su tasarrufu</li>
+                    </ul>
+                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                        <strong>💡 Pratik Öneri:</strong> Su geri kazanım sistemleri kurulum maliyeti 6 ayda kendini amorti eder.
+                    </p>
+                </div>
+
+                <div class="cost-card">
+                    <h3>⚡ Enerji Maliyetlerini Düşürme</h3>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Güneş Enerjisi Entegrasyonu:</strong> Fabrika çatılarında solar paneller - Yıllık %40 tasarruf</li>
+                        <li><strong>Atık Isı Geri Kazanımı:</strong> İşleme sıcaklığını yeniden kullanma - %25 enerji tasarrufu</li>
+                        <li><strong>LED Aydınlatma:</strong> %75 daha az enerji tüketimi - 2 yılda maliyet geri dönüşü</li>
+                        <li><strong>Akıllı Sensörler:</strong> Gereksiz enerji kullanımını önleme - %30 tasarruf</li>
+                    </ul>
+                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                        <strong>🔋 Gerçek Veri:</strong> Orta boy tesis için yıllık 500,000 TL enerji tasarrufu mümkün.
+                    </p>
+                </div>
+
+                <div class="cost-card">
+                    <h3>🚛 Lojistik Optimizasyonu</h3>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Akıllı Rota Planlama:</strong> AI ile optimal taşıma rotaları - %35 yakıt tasarrufu</li>
+                        <li><strong>Konsolidasyon Merkezleri:</strong> Toplu taşıma sistemleri - Maliyet %50 düşüş</li>
+                        <li><strong>Yerel Tedarik Zinciri:</strong> 500km içi üretim tercihli - %60 lojistik maliyet tasarrufu</li>
+                        <li><strong>Dijital İkiz Teknolojisi:</strong> Sanal simülasyonla verimlilik - %45 operasyonel iyileştirme</li>
+                    </ul>
+                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                        <strong>📊 Hesaplama:</strong> 1000 tonluk sevkiyat için 25,000 TL tasarruf sağlanabilir.
+                    </p>
+                </div>
+
+                <div class="cost-card">
+                    <h3>🔄 Süreç Otomasyonu</h3>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Robotik Sınıflandırma:</strong> İnsan hatalarını minimize etme - %98 doğruluk oranı</li>
+                        <li><strong>Predictive Maintenance:</strong> Makine arızalarını öngörme - %70 arıza önleme</li>
+                        <li><strong>IoT Sensörleri:</strong> Gerçek zamanlı veri toplama - %25 verimlilik artışı</li>
+                        <li><strong>Makine Öğrenmesi:</strong> Süreç optimizasyonu - Sürekli iyileştirme</li>
+                    </ul>
+                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                        <strong>🎯 ROI:</strong> Otomasyon yatırımı 18 ayda geri döner, %200 verimlilik artışı sağlar.
+                    </p>
+                </div>
+            </section>
+
+            <section id="calculator" class="section">
+                <h2>🧮 Geri Dönüşüm Etkisi Hesaplayıcısı</h2>
+                
+                <div class="calculator">
+                    <h3>💚 Çevresel Etki Hesaplayıcınız</h3>
+                    <p style="margin-bottom: 2rem;">Tekstil geri dönüşümünüzün çevresel ve ekonomik etkisini hesaplayın!</p>
+                    
+                    <input type="number" id="textile-amount" placeholder="Geri dönüştürülen tekstil miktarı (kg)" min="1">
+                    
+                    <select id="textile-type" style="background: rgba(255, 255, 255, 0.9);">
+                        <option value="">Tekstil türünü seçin...</option>
+                        <option value="cotton">Pamuk</option>
+                        <option value="polyester">Polyester</option>
+                        <option value="wool">Yün</option>
+                        <option value="mixed">Karışık Kumaş</option>
+                        <option value="denim">Kot (Denim)</option>
+                        <option value="silk">İpek</option>
+                    </select>
+                    
+                    <input type="number" id="processing-method" placeholder="Kaç kez geri dönüştürülecek? (1-5)" min="1" max="5">
+                    
+                    <button onclick="calculateImpact()">🌱 Etkiyi Hesapla</button>
+                    
+                    <div id="impact-result" class="result" style="display:none;"></div>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.95); padding: 3rem; border-radius: 25px; margin: 3rem 0; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
+                    <h3 style="text-align: center; color: #2c3e50; margin-bottom: 2rem;">🎯 Sürdürülebilirlik Hedefleri</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 20px;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🌊</div>
+                            <strong style="font-size: 1.2rem;">Su Tasarrufu</strong>
+                            <p style="margin-top: 0.5rem;">Aylık hedef: 10,000L</p>
+                            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 0.5rem; margin-top: 1rem; font-size: 0.9rem;">
+                                Bir banyo küveti = 300L
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border-radius: 20px;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                            <strong style="font-size: 1.2rem;">Enerji Tasarrufu</strong>
+                            <p style="margin-top: 0.5rem;">Aylık hedef: 5,000 kWh</p>
+                            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 0.5rem; margin-top: 1rem; font-size: 0.9rem;">
+                                Ortalama evin 6 aylık tüketimi
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; border-radius: 20px;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🌱</div>
+                            <strong style="font-size: 1.2rem;">CO₂ Azaltımı</strong>
+                            <p style="margin-top: 0.5rem;">Aylık hedef: 2 ton</p>
+                            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 0.5rem; margin-top: 1rem; font-size: 0.9rem;">
+                                10,000 km araba yolculuğu
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f5576c, #f093fb); color: white; padding: 3rem; border-radius: 25px; margin: 2rem 0;">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">📈 Geri Dönüşüm İstatistikleri</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">%12</div>
+                            <div>Küresel geri dönüşüm oranı</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">150B</div>
+                            <div>Yıllık üretilen kıyafet (adet)</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">%73</div>
+                            <div>Yakılan/gömülen atık oranı</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">40Kg</div>
+                            <div>Kişi başı yıllık tekstil tüketimi</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
